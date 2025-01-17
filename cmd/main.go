@@ -1,14 +1,21 @@
 package main
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/kaizansultan/backend-fiber/database"
+	"github.com/kaizansultan/backend-fiber/routes"
+)
 
 func main() {
+	log.Println("Server is setting up")
+	database.ConnectDB()
+
 	app := fiber.New()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("Halo Guys!")
-	})
+	routes.RegisterUserRoutes(app)
 
-	app.Listen(":8080")
+	log.Println("Server is running on port 8080")
+	log.Fatal(app.Listen(":8080"))
 }
-
